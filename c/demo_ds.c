@@ -19,10 +19,10 @@ typedef struct Tree Tree;
 
 /**** List *****/
 Node * getLastNode(Node *List);
-int delNode(Node* List, int key);
-int showContent(Node *List);
-int sortList(Node * List);
-int reverseList(Node  * List);
+int    delNode(Node* List, int key);
+int    showContent(Node *List);
+int    sortList(Node * List);
+Node *   reverseList(Node  * List);
 Node * getLastNode(Node *List);
 Node * getFirstNode(Node *List);
 
@@ -77,27 +77,43 @@ int delNode(Node* List, int key) {
             if(List->key==key)
                 List=NULL;
         }
-
         while(Iter->next!=NULL) {
             if(Iter->next->key==key)
             {
                 Prev = Iter;
                 break;
-
             }
             Iter = Iter->next;
         }
-
         temp = Iter->next;
         Prev->next = temp->next;
         free(temp);
-
     }
-
 }
 
-int sortList(Node * List) {}
-int reverseList(Node  * List) {}
+Node * reverseList(Node  * List)
+{
+    Node * Iter = List;
+    Node * Prev = NULL;
+    Node * temp;
+    Node *NewHead;
+
+    if(List) {
+        while(Iter->next!=NULL) {
+            temp = Iter->next;
+            Iter->next = Prev;
+            Prev = Iter;
+            Iter = temp;
+        }
+    }
+    List->next=NULL;
+    Iter->next = Prev;
+    return Iter;
+}
+
+int sortList(Node * List) {
+
+}
 
 Node * getLastNode(Node *List) {
     Node * Iter = List;
@@ -133,18 +149,29 @@ int main(int arg, char * argv[]) {
     // Create a List
     List *MyList;
     MyList=addNode(MyList,10);
-    printf("List Demo %p\n",MyList->next);
+    //    printf("List Demo %p\n",MyList->next);
+    
+    // Add Data to the Nodes
     addNode(MyList,8);
     addNode(MyList,4);
     addNode(MyList,7);
     addNode(MyList,9);
     addNode(MyList,12);
+    
+    //    printf("List Demo %p\n",MyList);
 
-    printf("List Demo %p\n",MyList);
+    // Display 
     showContent(MyList);
+    MyList=reverseList(MyList);
+    
+    //    printf("List Demo %p\n",MyList);
+
+    // Delete Nodes
     delNode(MyList, 9);
     delNode(MyList, 4);
+
+    // Display
     showContent(MyList);
 
-
+    return 0;
 }
