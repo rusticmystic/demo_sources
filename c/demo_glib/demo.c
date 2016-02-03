@@ -24,7 +24,6 @@
 /* This program demonstrates declaring a class and using it using glib and gobject system
  * */
 
-
 /* headers */
 #include <glib-2.0/glib.h>
 #include <glib-2.0/glib-object.h>
@@ -45,13 +44,11 @@ struct _MyBoxClass
   guint32 (*volume) (struct MyBox * object);
 };
 
-
 /* setting data type */
 GType my_box_get_type (void);
 
 typedef struct _MyBox MyBox;
 typedef struct _MyBoxClass MyBoxClass;
-
 
 /* boiler plate convenience macros*/
 
@@ -67,7 +64,6 @@ typedef struct _MyBoxClass MyBoxClass;
 /* this can also be detailed if we want to add our own finalise etc methods*/
 G_DEFINE_TYPE (MyBox, my_box, G_TYPE_OBJECT);
 
-
 /* prototypes and func */
 guint32
 volume (MyBox * this)
@@ -77,7 +73,6 @@ volume (MyBox * this)
        this->width, this->height);
   return (this->length * this->width * this->height);
 }
-
 
 /* init methods  class and base init*/
 static void
@@ -97,8 +92,6 @@ my_box_init (MyBox * this)
   this->width = 0;
   this->height = 0;
 }
-
-
 
 guint32
 my_box_volume (MyBox * this)

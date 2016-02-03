@@ -1,3 +1,5 @@
+/** This sample program contains linked list and Binary tree implementation. Features: Mirror, Search, Reverese etc **/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,11 +24,10 @@ Node * getLastNode(Node *List);
 int    delNode(Node* List, int key);
 int    showContent(Node *List);
 int    sortList(Node * List);
-Node *   reverseList(Node  * List);
+Node * reverseList(Node  * List);
 Node * getLastNode(Node *List);
 Node * getFirstNode(Node *List);
 int    FreeList(Node * List);
-
 
 int showContent(Node *List) {
     Node *Iter = List;
@@ -53,7 +54,6 @@ Node * addNode(Node* List, int key)
     }
     else {
         List = temp;
-        //printf("First Node = %p\n",temp);
     }
     return temp;
 }
@@ -174,8 +174,6 @@ Tree * addElement(Tree * root, int key)
         //Find the location
 
         if(root->key < key) {
-            printf("Comapring %d and %d Add %d to right\n",root->key,key,key);
-
             if(root->right) {
                 addElement (root->right,key);
             }
@@ -184,7 +182,6 @@ Tree * addElement(Tree * root, int key)
             }
 
         } else {
-            printf("Comapring %d and %d . Add %d to left\n",root->key,key, key);
             if(root->left) {
                 addElement (root->left,key);
             }
@@ -212,15 +209,88 @@ int Preorder(Tree *root) {
     }
 }
 
-/***Heap******/
+int Mirror(Tree *root) {
+    Tree * temp;
+    Tree *Left=NULL;
+    Tree *Right=NULL;
+
+    if(root) {
+        //swap the left and right nodes
+
+        if(root->left && root->right) {
+            temp = (root->left);
+            (root->left) = (root->right);
+            (root->right) = temp;
+        }
+
+        Mirror(root->left);
+        Mirror(root->right);
+    }
+}
+
+int searchElement(Tree * root, int key) {
+    int ret = 0;
+    if(root) {
+        if(root->key < key) {
+            ret = searchElement(root->left,key);
+        } else if(root->key > key) {
+            ret = searchElement(root->right,key);
+        }
+        else if(root->key==key) {
+            ret = 1;
+        }
+    }
+    return ret;
+}
+
+#define MAX(_x,_y) (_x-_y)>0 ? _x :_y
+ 
+int Height(Tree * root) {
+	
+	if(!root) return 0;
+	
+	if(root){
+	return MAX(Height(root->left),Height(root->right))+1;
+	}
+	
+}
+
+// Level order Traversal with DFS.
+// without queue.
+int LevelNodes(Tree *root, int level)
+{
+	if(!root) return;
+	if(level==1) {
+		printf(" %d ", root->key);
+		}
+	   LevelNodes(root->left, level-1);
+	   LevelNodes(root->right,level-1);
+	  
+	}
+
+int LevelOrder(Tree *root)
+{
+	int i;
+	if(!root) return;
+	int maxLevels = Height(root);
+	
+	for(i=1;i<=maxLevels;i++)
+	{
+	LevelNodes(root,i);	
+	printf("\n");	
+	}
+}
+
+/*** MAX Heap using a tree ******/
 
 typedef Node List;
 
 int main(int arg, char * argv[]) {
 
     // Create a List
-#if 1
+
     List *MyList=NULL;
+    int SearchFor = 0;
     MyList=addNode(MyList,10);
     //    printf("List Demo %p\n",MyList->next);
 
@@ -237,7 +307,7 @@ int main(int arg, char * argv[]) {
     showContent(MyList);
     MyList=reverseList(MyList);
 
-    //    printf("List Demo %p\n",MyList);
+    // printf("List Demo %p\n",MyList);
 
     // Delete Nodes
     //delNode(MyList, 9);
@@ -245,26 +315,46 @@ int main(int arg, char * argv[]) {
 
     // Display
     showContent(MyList);
-#endif
 
     FreeList(MyList);
     printf("\n List Freed \n");
     showContent(MyList);
+
     // Tree
     Tree *MyTree = NULL;
 
-#if 1
     // addElement(&MyTree,10);
-    MyTree = addElement(MyTree,110);
-    addElement(MyTree,10);
-    addElement(MyTree,40);
+    MyTree = addElement(MyTree,10);
+    addElement(MyTree,5);
     addElement(MyTree,30);
-#endif
+    addElement(MyTree,4);
+    addElement(MyTree,8);
+    addElement(MyTree,28);
+    addElement(MyTree,42);
+
 
     printf("InOrder \n");
     Inorder(MyTree);
 
     printf("\n PreOrder \n");
     Preorder(MyTree);
+     
+    printf("\n LevlOrder \n");
+
+    LevelOrder(MyTree);
+
+    printf("\n Inrder Mirror \n");
+    Mirror(MyTree);
+    Inorder(MyTree);
+    printf("\n LevlOrder \n");
+
+    LevelOrder(MyTree);
+
+    //search for
+    SearchFor = 8;
+    printf("\n %d in Tree: %s\n",SearchFor,searchElement(MyTree,SearchFor) ? "TRUE" :"FALSE");
+
+    printf("\n\nHeight of a Tree %d\n",Height(MyTree));
+     
     return 0;
 }
