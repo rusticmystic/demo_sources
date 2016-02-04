@@ -6,7 +6,7 @@ struct TreeNode {
     int Key;
 };
 
-enum OrderType { InOrder, PreOrder, PostOrder, LevelOrder};
+enum OrderType { InOrder, PreOrder, PostOrder, LevelOrder };
 
 class BTree {
     TreeNode *root;
@@ -21,14 +21,16 @@ public:
     void Add(int key);
     void Delete(int key);
     bool Find(int key) const;
+    int  Height();
+    // int getLevel(key)
+    // int LevelOrderByQueue()
+    int  NodesAtLevel(int Level);
     void Print(OrderType Order) const;
-    void Destroy();
+    void Destroy(TreeNode *&root);
 
-    //InsertNode(TreeNode *root, int key);
+    // InsertNode(TreeNode *root, int key);
     // operators
-    //void operator=(BTree& originalTree);
-
-
+    // void operator=(BTree& originalTree);
 };
 
 BTree::BTree()
@@ -38,13 +40,21 @@ BTree::BTree()
 
 BTree::~BTree()
 {
-    Destroy();
-    root = NULL;
+	Print(LevelOrder);
+    Destroy(root);
+    //root = NULL;
+    Print(LevelOrder);
 }
 
-void BTree::Destroy()
+void BTree::Destroy(TreeNode *&root)
 {
-
+if(root) {
+        Destroy(root->Left);
+        Destroy(root->Right);
+        TreeNode *temp = root;
+        delete temp;
+        temp=NULL;
+    }
 }
 
 bool BTree::IsEmpty() const
@@ -54,6 +64,10 @@ bool BTree::IsEmpty() const
     return ret;
 }
 
+/* Node this recursive calling a function which passes pointer in cpp.
+ * We have to pass the POINTER BY REFERENCE to be able to change the pointer,
+ * rather than changing its local copy
+ * */
 void InsertNode(TreeNode *&root, int key)
 {
     if(!root) {
@@ -61,14 +75,13 @@ void InsertNode(TreeNode *&root, int key)
         root->Key = key;
         root->Left = NULL;
         root->Right = NULL;
-
     } else
     {
         if(key < root->Key) {
             InsertNode(root->Left, key);
         }
         else {
-            InsertNode(root->Left, key);
+            InsertNode(root->Right, key);
         }
     }
 }
@@ -82,22 +95,101 @@ void BTree::Delete(int key) {
 
 }
 
+#define MAX(_x,_y) (_x-_y)>0 ? _x :_y
+
+int TreeHeight(TreeNode *&root)
+{
+    if(!root) return 0;
+    return MAX(TreeHeight(root->Left),TreeHeight(root->Right))+1;
+}
+
+int  BTree::Height() {
+    int x=TreeHeight(root);
+    return x;
+}
+
+void LevelNodes(TreeNode *root, int level) {
+    if(!root) return;
+    if(level==1) {
+        std::cout << " " << root->Key << " ";
+    }
+    LevelNodes(root->Left, level-1);
+    LevelNodes(root->Right,level-1);
+    std::cout << "  ";
+}
+
+int  BTree::NodesAtLevel(int Level) {
+    std::cout << "\nNodes at Level \n" << std::endl;
+    LevelNodes (root,Level);
+    return 0;
+}
+
+bool SearchTree(TreeNode *root,int key, int &ret)
+{
+    if (root) {
+        if (root->Key > key)
+        {
+            std::cout << root->Key << std::endl;
+            SearchTree (root->Left,key, ret);
+        } else if (root->Key < key)
+        {
+            std::cout << root->Key << std::endl;
+            SearchTree(root->Right,key, ret);
+        } else if (root->Key == key)
+        {
+            std::cout << root->Key << std::endl;
+            ret = true;
+            return true;
+        }
+    }
+    std::cout << root << std::endl;
+    return false;
+}
+
 bool BTree::Find(int key) const
 {
-    bool ret = false;
-
+    int ret=false;
+    SearchTree(root, key,ret);
     return ret;
-
 }
 
 void InOrderTraversal(TreeNode * root)
 {
     if(root) {
-        std::cout << " " << root->Key<< " " ;
         InOrderTraversal(root->Left);
+        std::cout << " " << root->Key<< " " ;
         InOrderTraversal(root->Right);
     }
+}
 
+void PreOrderTraversal(TreeNode * root)
+{
+    if(root) {
+        std::cout << " " << root->Key<< " " ;
+        PreOrderTraversal(root->Left);
+        PreOrderTraversal(root->Right);
+    }
+}
+
+void PostOrderTraversal(TreeNode * root)
+{
+    if(root) {
+        PostOrderTraversal(root->Left);
+        PostOrderTraversal(root->Right);
+        std::cout << " " << root->Key<< " " ;
+    }
+}
+
+void LevelOrderTraversal(TreeNode * root)
+{
+    if(root) {
+        int Height = TreeHeight(root);
+        for (int Level=1; Level <=Height; Level++)
+        {
+            LevelNodes (root,Level);
+            std::cout << " \n" << std::endl;
+        }
+    }
 }
 
 void BTree::Print(OrderType Order) const
@@ -108,12 +200,29 @@ void BTree::Print(OrderType Order) const
         InOrderTraversal(root);
         std::cout << std::endl;
     }
+    else if(Order == PostOrder) {
+        std::cout << " PostOrder" << std::endl;
+        PostOrderTraversal(root);
+        std::cout << std::endl;
+
+    }
+    else if(Order == PreOrder) {
+        std::cout << " PreOrder" << std::endl;
+        PreOrderTraversal(root);
+        std::cout << std::endl;
+
+    }
+    else if(Order == LevelOrder) {
+        std::cout << " LevelOrder" << std::endl;
+        LevelOrderTraversal(root);
+        std::cout << std::endl;
+    }
 }
 
 int main() {
 
     std::cout << " Tree Demo" << std::endl;
-
+    {
     BTree BT;
 
     BT.Add(10);
@@ -125,5 +234,15 @@ int main() {
 
 
     BT.Print(InOrder);
+    BT.Print(LevelOrder);
+    std::cout << " Tree height " << BT.Height();
+    BT.NodesAtLevel(1);
 
+    int searchfor = 14;
+    std::string found = BT.Find(searchfor) ? "true" : "false";
+    std::cout << "\n Is " << searchfor << " in Tree :"<< found << std::endl;
+
+   } 
+     
+    return 0;
 }
