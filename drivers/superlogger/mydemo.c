@@ -1,5 +1,4 @@
-/*Demo file to write superlogger 
- * Author: Shivdeep Singh */
+/*Demo file to write superlogger */
 
 #include <linux/init.h>
 #include <linux/module.h>
@@ -13,7 +12,7 @@
 #define TRUE 1
 #define FALSE 0
 
-static int hello_data __initdata = 10;
+//static int hello_data __initdata = 10;
 
 struct mybuff_t
 {
@@ -45,19 +44,19 @@ struct superLogger
 #define UNLOCK_ADAPTER(Adapter) mutex_unlock(&Adapter->Lock)
 
 /* debug log utility API's*/
-long bufferNew ();
+long bufferNew (void);
 bool bufferAddData (long listpointer, long datapointer);
 bool bufferFree (long buffer);
-long bufferListNew ();
+long bufferListNew (void);
 bool bufferListFree (long bufferlist);
-long debugAdapterNew ();
+long debugAdapterNew (void);
 bool debugAdapterFree (long pointer);
 bool debug_print (long context, const char *format, ...);
 long bufferListTakeData (long bufferlist);
 
 /*Debug API definitions*/
 long
-bufferNew ()
+bufferNew (void)
 {
   buffer *temp = NULL;
   temp = (buffer *) kmalloc (sizeof (buffer), GFP_KERNEL);
@@ -68,6 +67,7 @@ bufferNew ()
       printk ("Could not allocate buffer...\n");
       return 0;
     }
+    
   temp->data = (char *) kmalloc (TEXT_LENGTH * sizeof (char), GFP_KERNEL);
   return (long) temp;
 }
@@ -80,7 +80,7 @@ bufferAddData (long listpointer, long datapointer)
       return FALSE;
     }
 
-  return;
+  return true;
 }
 
 bool
@@ -90,21 +90,24 @@ bufferFree (long buffer)
     {
       return FALSE;
     }
-  kfree (buffer);
+    
+  kfree ((void *)buffer);
 
   return TRUE;
 }
 
 long
-bufferListNew ()
+bufferListNew (void)
 {
   buffer *temp = NULL;
   temp = (buffer *) kmalloc (sizeof (buffer), GFP_KERNEL);
+  
   if (!temp)
     {
       printk ("Could not allocate buffer...\n");
       return 0;
     }
+    
   return (long) temp;
 }
 
@@ -116,11 +119,11 @@ bufferListFree (long bufferlist)
       return -1;
     }
 
-  return;
+  return true;
 }
 
 long
-debugAdapterNew ()
+debugAdapterNew (void)
 {
   dbgAdapter *temp = NULL;
   temp = (dbgAdapter *) kmalloc (sizeof (dbgAdapter), GFP_KERNEL);
@@ -137,7 +140,7 @@ debugAdapterFree (long pointer)
 {
   if (pointer)
     {
-      kfree (pointer);
+      kfree ((void *)pointer);
       return TRUE;
     }
   return FALSE;
@@ -149,6 +152,8 @@ debug_print (long context, const char *format, ...)
   buffer *buf;
   struct superLogger *sLogger;
   dbgAdapter *Ad;
+  va_list arg_list;
+  
   printk ("\nIn debug_print");
 
   if (!context)
@@ -159,7 +164,6 @@ debug_print (long context, const char *format, ...)
   sLogger = (struct superLogger *) context;
   Ad = sLogger->Adapter;
 
-  va_list arg_list;
   va_start (arg_list, format);
   /* Allocate buffer and add it to buffer list */
   buf = (buffer *) bufferNew ();
@@ -167,13 +171,13 @@ debug_print (long context, const char *format, ...)
     {
       vsprintf (buf->data, format, arg_list);
     }
-  return;
+  return true;
 }
 
 long
 bufferListTakeData (long bufferlist)
 {
-  return;
+  return 1;
 }
 
 /*other datta structures*/
@@ -192,9 +196,9 @@ init_function (void)
 
   //temp =(long)&logger;
   /*initialise adapter */
-  logger.Adapter = debugAdapterNew ();
+  logger.Adapter = (dbgAdapter *)debugAdapterNew ();
   if (!logger.Adapter)
-    return;
+    return -1;
   printk ("\nAdapter pointer is %p\n", logger.Adapter);
 
 
@@ -204,7 +208,7 @@ init_function (void)
 static void __exit
 cleanup_function (void)
 {
-  debugAdapterFree (logger.Adapter);
+  debugAdapterFree ((long)logger.Adapter);
   printk ("Bye\n");
 }
 

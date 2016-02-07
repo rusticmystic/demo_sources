@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 struct TreeNode {
     TreeNode *Left;
@@ -23,7 +24,7 @@ public:
     bool Find(int key) const;
     int  Height();
     // int getLevel(key)
-    // int LevelOrderByQueue()
+    int  LevelOrderByQueue();
     int  NodesAtLevel(int Level);
     void Print(OrderType Order) const;
     void Destroy(TreeNode *&root);
@@ -40,20 +41,20 @@ BTree::BTree()
 
 BTree::~BTree()
 {
-	Print(LevelOrder);
     Destroy(root);
     //root = NULL;
-    Print(LevelOrder);
 }
 
 void BTree::Destroy(TreeNode *&root)
 {
-if(root) {
-        Destroy(root->Left);
-        Destroy(root->Right);
-        TreeNode *temp = root;
-        delete temp;
-        temp=NULL;
+    if(root) {
+        TreeNode *Left = root->Left;
+        TreeNode *Right = root->Right;
+        delete root;
+        root = NULL;
+
+        Destroy(Left);
+        Destroy(Right);
     }
 }
 
@@ -119,7 +120,7 @@ void LevelNodes(TreeNode *root, int level) {
 }
 
 int  BTree::NodesAtLevel(int Level) {
-    std::cout << "\nNodes at Level \n" << std::endl;
+    std::cout << "\nNodes at Level " << Level << std::endl;
     LevelNodes (root,Level);
     return 0;
 }
@@ -129,20 +130,20 @@ bool SearchTree(TreeNode *root,int key, int &ret)
     if (root) {
         if (root->Key > key)
         {
-            std::cout << root->Key << std::endl;
+            //std::cout << root->Key << std::endl;
             SearchTree (root->Left,key, ret);
         } else if (root->Key < key)
         {
-            std::cout << root->Key << std::endl;
+            //std::cout << root->Key << std::endl;
             SearchTree(root->Right,key, ret);
         } else if (root->Key == key)
         {
-            std::cout << root->Key << std::endl;
+            //std::cout << root->Key << std::endl;
             ret = true;
             return true;
         }
     }
-    std::cout << root << std::endl;
+  //  std::cout << root << std::endl;
     return false;
 }
 
@@ -219,30 +220,71 @@ void BTree::Print(OrderType Order) const
     }
 }
 
+int BTree::LevelOrderByQueue()
+{
+    TreeNode *temp = root;
+    std::queue<TreeNode *> Level_1_Q;
+    std::queue<TreeNode *> Level_2_Q;
+    // push root into Q1;
+    Level_1_Q.push(root);
+    bool loop=true;
+
+    // loop
+    while(loop) {
+        while(!Level_1_Q.empty()) {
+
+            temp = Level_1_Q.front();
+            Level_1_Q.pop();
+
+            if(temp) {
+                std::cout << " " << temp->Key <<" ";
+                // push left and right of this Tree to second queue
+                Level_2_Q.push(temp->Left);
+                Level_2_Q.push(temp->Right);
+            }
+        }
+
+        // set exit condition
+        if(Level_2_Q.empty()) loop = false;
+
+        // copy the second queue to first one
+        while(!Level_2_Q.empty()) {
+
+            Level_1_Q.push(Level_2_Q.front());
+            Level_2_Q.pop();
+            std::cout << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+
 int main() {
 
     std::cout << " Tree Demo" << std::endl;
     {
-    BTree BT;
+        BTree BT;
 
-    BT.Add(10);
-    BT.Add(20);
-    BT.Add(5);
-    BT.Add(15);
-    BT.Add(30);
+        BT.Add(10);
+        BT.Add(20);
+        BT.Add(5);
+        BT.Add(15);
+        BT.Add(30);
+        BT.Add(2);
+	BT.Add(6);
+	BT.Add(14);
+	BT.Add(31);
 
+        BT.Print(InOrder);
+        BT.Print(LevelOrder);
+        std::cout << "Tree height " << BT.Height();
+        BT.NodesAtLevel(2);
 
+        int searchfor = 14;
+        std::string found = BT.Find(searchfor) ? "true" : "false";
+        std::cout << "\n\nIs " << searchfor << " in Tree :"<< found << std::endl;
+        BT.LevelOrderByQueue();
+    }
 
-    BT.Print(InOrder);
-    BT.Print(LevelOrder);
-    std::cout << " Tree height " << BT.Height();
-    BT.NodesAtLevel(1);
-
-    int searchfor = 14;
-    std::string found = BT.Find(searchfor) ? "true" : "false";
-    std::cout << "\n Is " << searchfor << " in Tree :"<< found << std::endl;
-
-   } 
-     
     return 0;
 }
