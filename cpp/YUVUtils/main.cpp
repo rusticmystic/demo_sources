@@ -92,7 +92,7 @@ int main(int arg, char *argv[]) {
     }	
 		
 		
-		}
+    }
 
 
     //Estimate the number of frames and file size
