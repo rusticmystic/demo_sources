@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #endif
 #include "event.h"
+//#include "SDL_ttf.h"
+
 
 class Demo : public DemoEvent {
     SDL_Surface *Screen;
@@ -15,6 +17,9 @@ class Demo : public DemoEvent {
     int WindowHeight;
     SDL_Event event;
     int x,y;
+
+    // Add a joystick
+    SDL_Joystick *Joy;
 
 public:
     // Constructor
@@ -37,6 +42,10 @@ public:
     void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
     void OnExit();
     void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+    void OnJoyButtonDown(Uint8 which, Uint8 button);
+
+
+
 
 };
 
@@ -49,6 +58,10 @@ class DemoSoundBank {
 
 // uses SDL Image
 class DemoImageBank {
+
+public:
+SDL_Surface * LoadImage(char * file);
+void Clean();
 
 };
 

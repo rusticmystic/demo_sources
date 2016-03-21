@@ -23,8 +23,13 @@
 		<Linker>
 			<Add option="`sdl-config --libs`" />
 		</Linker>
+		<Unit filename="Demo.cbp" />
+		<Unit filename="Demo.depend" />
 		<Unit filename="cb.bmp" />
+		<Unit filename="event.cpp" />
+		<Unit filename="event.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

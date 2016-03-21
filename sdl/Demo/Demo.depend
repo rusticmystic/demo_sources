@@ -16,7 +16,7 @@
 1458548114 /local/shivdeep/myprograms/sdl1/Demo/event.h
 	<SDL.h>
 
-1428929774 /usr/include/SDL/SDL.h
+1399696797 /usr/include/SDL/SDL.h
 	"SDL_main.h"
 	"SDL_stdinc.h"
 	"SDL_audio.h"
@@ -35,14 +35,14 @@
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_main.h
+1399696797 /usr/include/SDL/SDL_main.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_stdinc.h
+1399696797 /usr/include/SDL/SDL_stdinc.h
 	"SDL_config.h"
 	<sys/types.h>
 	<stdio.h>
@@ -68,17 +68,17 @@
 	<stdlib.h>
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_config.h
+1399696797 /usr/include/SDL/SDL_config.h
 	"SDL_platform.h"
 	<stdarg.h>
 
-1428929774 /usr/include/SDL/SDL_platform.h
+1399696797 /usr/include/SDL/SDL_platform.h
 
-1428929774 /usr/include/SDL/begin_code.h
+1399696797 /usr/include/SDL/begin_code.h
 
-1428929774 /usr/include/SDL/close_code.h
+1399696797 /usr/include/SDL/close_code.h
 
-1428929774 /usr/include/SDL/SDL_audio.h
+1399696797 /usr/include/SDL/SDL_audio.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_endian.h"
@@ -88,23 +88,24 @@
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_error.h
+1399696797 /usr/include/SDL/SDL_error.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_endian.h
+1399696797 /usr/include/SDL/SDL_endian.h
 	"SDL_stdinc.h"
+	<endian.h>
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_mutex.h
+1399696797 /usr/include/SDL/SDL_mutex.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_thread.h
+1399696797 /usr/include/SDL/SDL_thread.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_mutex.h"
@@ -112,24 +113,24 @@
 	<process.h>
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_rwops.h
+1399696797 /usr/include/SDL/SDL_rwops.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_cdrom.h
+1399696797 /usr/include/SDL/SDL_cdrom.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_cpuinfo.h
+1399696797 /usr/include/SDL/SDL_cpuinfo.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_events.h
+1399696797 /usr/include/SDL/SDL_events.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_active.h"
@@ -140,59 +141,76 @@
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_active.h
+1399696797 /usr/include/SDL/SDL_active.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_keyboard.h
+1399696797 /usr/include/SDL/SDL_keyboard.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_keysym.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_keysym.h
+1399696797 /usr/include/SDL/SDL_keysym.h
 
-1428929774 /usr/include/SDL/SDL_mouse.h
+1399696797 /usr/include/SDL/SDL_mouse.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_video.h
+1399696797 /usr/include/SDL/SDL_video.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_rwops.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_joystick.h
+1399696797 /usr/include/SDL/SDL_joystick.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_quit.h
+1399696797 /usr/include/SDL/SDL_quit.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 
-1428929774 /usr/include/SDL/SDL_loadso.h
-	"SDL_stdinc.h"
-	"SDL_error.h"
-	"begin_code.h"
-	"close_code.h"
-
-1428929774 /usr/include/SDL/SDL_timer.h
+1399696797 /usr/include/SDL/SDL_loadso.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1428929774 /usr/include/SDL/SDL_version.h
+1399696797 /usr/include/SDL/SDL_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1399696797 /usr/include/SDL/SDL_version.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
+
+1458576919 source:/home/agyat/Devel/mygithub_project/demo_sources/sdl/Demo/main.cpp
+	<cstdlib>
+	<stdlib.h>
+	"main.h"
+
+1458576267 /home/agyat/Devel/mygithub_project/demo_sources/sdl/Demo/main.h
+	<iostream>
+	<cstdlib>
+	<stdlib.h>
+	"event.h"
+
+1458567690 /home/agyat/Devel/mygithub_project/demo_sources/sdl/Demo/event.h
+	<SDL.h>
+
+1458567690 source:/home/agyat/Devel/mygithub_project/demo_sources/sdl/Demo/event.cpp
+	"event.h"
 
