@@ -1,0 +1,154 @@
+#include <iostream>
+
+#ifdef __cplusplus
+#include <cstdlib>
+#else
+#include <stdlib.h>
+#endif
+#include "event.h"
+
+// STL
+#include <vector>
+
+class Rectangle {
+    SDL_Surface *S;
+    SDL_Rect     R;
+    // This has x,y has starting positions.
+    // W,H are Height and Width
+
+public:
+    // Constructor
+    Rectangle(int w=0,int h=0) {
+        R.w = w;
+        R.h = h;
+        S = SDL_CreateRGBSurface(0, R.w, R.h, 32, 0, 0, 0, 0);
+    }
+
+    // Copy constructor is needed ??
+    Rectangle(const Rectangle &cR) {
+
+        R=cR.R;
+        S = SDL_CreateRGBSurface(0, R.w, R.h, 32, 0, 0, 0, 0);
+        *S = *cR.S;
+    }
+
+    // Destructor
+    ~Rectangle() {
+        // pushing back this in vector call its destructor why?
+    }
+
+    void SetPos(int x,int y) {
+        R.x = x;
+        R.y = y;
+    }
+
+    void Fill(int R, int G, int B) {
+        SDL_FillRect(S, 0, SDL_MapRGB(S->format,R ,G, B));
+
+    }
+
+    SDL_Surface* GetSurface()
+    {
+        return S;
+    }
+
+    SDL_Rect* GetRect() {
+
+        return &R;
+    }
+
+    void Free() {
+        // separated and will be called from destructor
+        if(S)
+            SDL_FreeSurface(S);
+    }
+};
+
+class Demo : public DemoEvent {
+    SDL_Surface *Screen;
+    SDL_Surface *bmp;
+    bool Running;
+    int WindowWidth;
+    int WindowHeight;
+    SDL_Event event;
+
+    int x,y;
+
+    // View to be seen
+    std::vector <Rectangle > TopRow;
+    Rectangle *LowerRow;
+public:
+    // Constructor
+    Demo(int W=640,int H=480) : WindowHeight(H),WindowWidth(W),Screen(0),bmp(0),x(0),y(0) {
+        // Let us set this variable;
+        Running = true;
+
+        // 4 blocks
+        for(int i=0; i<4; i++) {
+
+            TopRow.push_back(Rectangle(160,120));
+        }
+        LowerRow = new Rectangle(640,360);
+
+    }
+
+    ~Demo() {
+        // Let us set this variable;
+        for(int i=0; i<4; i++) {
+
+            TopRow[i].Free();
+        }
+
+        LowerRow->Free();
+        delete LowerRow;
+
+        if(bmp) {
+            SDL_FreeSurface(bmp);
+        }
+
+        if(Screen) {
+            SDL_FreeSurface(bmp);
+        }
+
+    }
+
+    // Destructor
+
+    // Methods
+    bool Init();
+    void HandleEvent(SDL_Event* Event);
+    void Execute();
+    void Loop();
+    void Render();
+    void Cleanup();
+
+    // Actions onn event
+    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+    void OnExit();
+    void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+
+    // temporary function
+    void CallMe();
+
+};
+
+// Make the gam eusing this tutorial
+// http://www.sdltutorials.com/sdl-net-part-1-user-tutorial
+// uses extension libraries
+class DemoSoundBank {
+
+};
+
+// uses SDL Image
+class DemoImageBank {
+
+};
+
+// uses SDL TTF
+class DemoFont {
+
+
+};
+
+
+
