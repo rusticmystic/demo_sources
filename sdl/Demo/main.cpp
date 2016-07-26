@@ -44,7 +44,7 @@ bool Demo::Init() {
     {
         printf("Error Opening Joystick %s",SDL_GetError());
         // fallback to keyboard controls
-       // return false;
+        // return false;
     }
 
 
@@ -89,18 +89,18 @@ void Demo::Render()
     dstrect.x = x;
     dstrect.y = y;
 
-SDL_BlitSurface(bmp,0,Screen,0);
+    SDL_BlitSurface(bmp,0,Screen,0);
     SDL_FillRect(Screen, 0, SDL_MapRGB(Screen->format, x, y, (x+y)/2));
 
     SDL_Flip(Screen);
-  //  SDL_Delay(2000);
+    //  SDL_Delay(2000);
 }
 
 void Demo::Cleanup()
 {
 
     SDL_FreeSurface(bmp);
-   if(Joy) SDL_JoystickClose( Joy );
+    if(Joy) SDL_JoystickClose( Joy );
     SDL_Quit();
 }
 
@@ -124,25 +124,25 @@ void Demo::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 
 void Demo::OnExit() {
 
-Running = false;
+    Running = false;
 }
 
 void Demo::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
-if(sym == SDLK_1)
-{
+    if(sym == SDLK_1)
+    {
 // demo try to blit an image
-printf("Key 1 Pressed. Show Image\n");
+        printf("Key 1 Pressed. Show Image\n");
 //SDL_Surface *s = SDL_SetVideoMode(WindowWidth, WindowHeight, 32,SDL_SWSURFACE|SDL_DOUBLEBUF);
-SDL_Surface *i = SDL_LoadBMP("cb.bmp");
+        SDL_Surface *i = SDL_LoadBMP("cb.bmp");
 
-SDL_BlitSurface(i,NULL,Screen,NULL);
-SDL_Flip(Screen);
-SDL_Delay(5000);
+        SDL_BlitSurface(i,NULL,Screen,NULL);
+        SDL_Flip(Screen);
+        SDL_Delay(5000);
 //SDL_FreeSurface(s);
-}
-if (sym == SDLK_ESCAPE)
-                Running = false;
+    }
+    if (sym == SDLK_ESCAPE)
+        Running = false;
 
 
 }

@@ -48,6 +48,7 @@ int main() {
     height = G.PictureHeight;
 
     printf(" Width %d Height %d \n",width,height);
+    height = 736;
     int channels = 3; // for a RGB image
     char* pixels = new char[width * height * channels];
     

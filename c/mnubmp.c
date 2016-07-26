@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "SDL.h" // include SDL header
+#include <iostream>
 
 
 
@@ -33,7 +34,7 @@ typedef struct                       /**** BMP file info structure ****/
 #pragma pack(pop)
 
 typedef struct {
-    unsigned char r,g,b,junk;
+    unsigned char r,g,b;//,junk;
 } COLOURINDEX;
 // IiiHHIIiiII"
 
@@ -42,7 +43,6 @@ int main() {
     FILE *fp = fopen("a.bmp","rb");
     char * iter;
     int i,j;
-
 
     BITMAPFILEHEADER BFH;
     BITMAPINFOHEADER BIH;
@@ -53,7 +53,6 @@ int main() {
     if(!fp)
         perror("No File");
 
-
     fread(&BFH,sizeof(BFH),1,fp);
     fread(&BIH,sizeof(BIH),1,fp);
 
@@ -62,10 +61,10 @@ int main() {
 
     int channels = 3; // for a RGB image
     char* pixels = new char[width * height * channels];
+    char* invpixels = new char[width * height * channels];
 
     iter = pixels;
 
-   
     // READING BMP image data to pixels
     // BMP is stored inverted with lasts pixel first
     // Call these in a while loop , and run upto height x width
@@ -96,29 +95,9 @@ int main() {
 
     // but instead of creating a renderer, we can draw directly to the screen
     screen = SDL_GetWindowSurface(window); 
-    renderer = SDL_CreateRenderer(screen, -1, 0);
-    if (!renderer) {
-        fprintf(stderr, "SDL: could not create renderer - exiting\n");
-        exit(1);
-    }
-
-    // Allocate a place to put our YUV image on that screen
-    texture = SDL_CreateTexture(
-            renderer,
-            SDL_PIXELFORMAT_YV12,
-            SDL_TEXTUREACCESS_STREAMING,
-            pCodecCtx->width,
-            pCodecCtx->height
-        );
-    if (!texture) {
-        fprintf(stderr, "SDL: could not create texture - exiting\n");
-        exit(1);
-    } 
-
-
-    // Cretae window and surface
-    
-    
+  
+    // Create window and surface
+  
     image = SDL_CreateRGBSurfaceFrom((void*)pixels,
                 width,
                 height,
@@ -130,6 +109,36 @@ int main() {
                 0);                    // alpha mask (none)
 
     SDL_BlitSurface(image, NULL, screen, NULL); 
+    // blitting inverse image
+    COLOURINDEX *iterf,*iterb;
+    COLOURINDEX  **box, **invbox;
+    box = (COLOURINDEX  **) &pixels; 
+    invbox = (COLOURINDEX  **)  &invpixels;
+    
+    iterf = (COLOURINDEX *)pixels;
+    iterb = (COLOURINDEX *)invpixels;
+    
+    for (int j=0;j< height;j++)
+    {   
+		{
+		memcpy((*invbox+ (j*width)),(*box+(width *(height-1-j))),width); 
+		}
+		}
+		
+		 SDL_Delay(4000);
+   image = SDL_CreateRGBSurfaceFrom((void*)invpixels,
+                width,
+                height,
+                channels * 8,          // bits per pixel = 24
+                width * channels,  // pitch
+                0x0000FF,              // red mask
+                0x00FF00,              // green mask
+                0xFF0000,              // blue mask
+                0);                    // alpha mask (none)
+
+    SDL_BlitSurface(image, NULL, screen, NULL);
+   
+   
    
    
     SDL_FreeSurface(image);

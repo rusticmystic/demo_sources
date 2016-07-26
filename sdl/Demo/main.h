@@ -60,13 +60,56 @@ class DemoSoundBank {
 class DemoImageBank {
 
 public:
-SDL_Surface * LoadImage(char * file);
-void Clean();
+    SDL_Surface * LoadImage(char * file);
+    void Clean();
 
 };
 
 // uses SDL TTF
 class DemoFont {
 
+
+};
+
+
+class SoundObject {
+    SDL_AudioSpec wav_spec;
+    Uint32 wav_length;
+    Uint8 *wav_buffer;
+    bool loaded;
+
+    SoundObject() {
+    loaded = false;
+
+    }
+
+    void Load () {
+        if (SDL_LoadWAV("test.wav", &wav_spec, &wav_buffer, &wav_length) == NULL) {
+            fprintf(stderr, "Could not open test.wav: %s\n", SDL_GetError());
+        } else {
+            loaded = true;
+
+        }
+    }
+
+    void Play () {
+    if(!loaded) return;
+
+    }
+
+    void Pause () {
+
+
+    }
+
+    void Stop() {
+
+
+
+
+
+
+
+    }
 
 };
